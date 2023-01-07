@@ -1,6 +1,3 @@
- <#Write-Host "What would you like to do?"
-Write-host "A) "
-Write-host "B)"#>
 
 $res = Read-Host -Prompt "Enter 'A' to collect new Baseline or 'B' to  monitor an existing Baseline"
 
@@ -25,7 +22,7 @@ if($res -eq "A".ToUpper()) {
 
     Remove-Existing-Baseline
 
-#Collect files from target folder
+
 
     $files = Get-ChildItem -Path .\Files
 
@@ -38,7 +35,6 @@ if($res -eq "A".ToUpper()) {
 
 elseif($res -eq "B".ToUpper()) {
 
-#if user selects B collect paths and hashes from baseline text file and store in a dictionary
     $fileHashTable = @{}
 
     $fileHashes = Get-Content -Path .\baseline.txt
@@ -47,7 +43,6 @@ elseif($res -eq "B".ToUpper()) {
         $fileHashTable.add($f.Split("|")[0],$f.Split("|")[1])
     }
 
-    #CREATE A CONTINUOUS LOOP THAT COLLECTS AND CALCULATE THE HASH OF EACH TEXT FILE
 
     while($true) {
 
@@ -58,7 +53,7 @@ elseif($res -eq "B".ToUpper()) {
         foreach($f in $files){
             $hash = Calculate-File-Hash $f.FullName 
 
-            if($fileHashTable[$hash.Path] -eq $null) {
+            if(-Not $fileHashTable[$hash.Path]) {
                 Write-Host "$($hash.Path) has been created!"
             } 
             else {
@@ -86,12 +81,3 @@ elseif($res -eq "B".ToUpper()) {
 
 }
 
-<# 
-
-#>
-
-
-
-<#
-
-#> 
